@@ -1,0 +1,41 @@
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+  name: selenoid-images-prepull
+  namespace: selenoid
+  annotations:
+    source: "selenoid-images-prepull images"
+spec:
+  selector:
+    matchLabels:
+      name: selenoid-images-prepull
+  template:
+    metadata:
+      labels:
+        name: selenoid-images-prepull
+    spec:
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - grep image /etc/selenoid/browsers.json | awk '{print $2}' | tr -d ',' | tr -d '"' |
+          xargs -I{} docker pull {}
+        name: selenoid-images-prepull
+        image: docker
+        volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run
+        - name: browsers-config
+          mountPath: /etc/selenoid
+        securityContext:
+          privileged: true
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run
+      - name: browsers-config
+        configMap:
+          name: selenoid-app-config
+      containers:
+      - name: pause
+        image: gcr.io/google_containers/pause

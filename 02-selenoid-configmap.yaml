@@ -1,0 +1,25 @@
+apiVersion: v1
+data:
+  browsers.json: |-
+    {
+      "chrome": {
+        "default": "68.0",
+        "versions": {
+          "68.0": {
+            "image": "selenoid/vnc:chrome_68.0",
+            "port": "4444",
+            "shmSize": 536870912,
+            "resources": {
+              "limits": {
+                "cpu": "0.5",
+                "memory": "1024Mi"
+              }
+            }
+          }
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: selenoid-app-config
+  namespace: selenoid

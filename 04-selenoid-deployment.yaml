@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selenoidk8
+  namespace: selenoid
+  labels:
+    name: selenoid-app
+spec:
+  containers:
+    - name: selenoidk8
+      image: alcounit/selenoidk8
+      env:
+      - name: TZ
+        value: Europe/Kiev
+      args: [
+       "-conf", "/etc/selenoid/browsers.json",
+       "-limit", "35",
+       "-timeout", "7m0s",
+       "-retry-count", "5",
+       "-session-delete-timeout", "9m0s",
+       "-session-attempt-timeout", "240s",
+       "-service-startup-timeout", "240s",
+       "-disable-queue",
+       "-enable-kubernetes-support",
+       "-namespace", "selenoid"
+      ]
+      ports:
+      - name: selenium
+        containerPort: 4444
+      volumeMounts:
+      - name: browsers-config
+        mountPath: /etc/selenoid
+    - name: selenoid-ui
+      image: aerokube/selenoid-ui:1.6.3
+      args: ["-selenoid-uri", "http://127.0.0.1:4444"]
+      ports:
+      - name: selenoid-ui
+        containerPort: 8080
+  volumes:
+    - name: browsers-config
+      configMap:
+        name: selenoid-app-config
+  restartPolicy: Never

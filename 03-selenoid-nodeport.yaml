@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: selenoidk8
+  namespace: selenoid
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: selenoid-ui
+    nodePort: 30002
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: selenoidk8
+    nodePort: 30001
+    port: 4444
+    protocol: TCP
+    targetPort: 4444
+  selector:
+    name: selenoid-app
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
