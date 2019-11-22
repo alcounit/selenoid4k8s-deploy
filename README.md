@@ -9,6 +9,11 @@ $ git clone https://github.com/alcounit/selenoid4k8s-deploy.git
 $ cd selenoid4k8s-deploy
 ```
 
+#Deployment variants
+1. [kubectl apply .... ](#kubectlapply)
+2. [Helm](#helm)
+
+# Deployment directly using kubectl apply <a name="kubectlapply"></a>
 ## Create namespace
 
 ```
@@ -49,4 +54,19 @@ selenoid-ui accessible on nodeport 30002
 
 ```
 http://node01:30002/
+```
+# Depoyment using helm <a name="helm"></a>
+```
+helm install --name browser-hub selenoid4k8s/
+
+http://node01:30001/
+http://node01:30002/
+```
+
+For access via cloud LoadBalancer
+```
+helm install --name certa-browser-hub selenoid4k8s/ --set service.type=LoadBalancer
+
+http://LoadBalancerIP:4444/
+http://LoadBalancerIP:8080/
 ```

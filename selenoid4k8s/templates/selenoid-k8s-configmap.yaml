@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  browsers.json: |-
+    {{ .Values.browsers | toJson }}
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-selenoid-config
+  labels:
+    app: {{ .Release.Name }}-selenoid
+    release: {{ .Release.Name }}

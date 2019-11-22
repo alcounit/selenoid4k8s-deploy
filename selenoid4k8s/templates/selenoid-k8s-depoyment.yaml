@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-selenoid
+  labels:
+    app: {{ .Release.Name }}-selenoid
+    release: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Release.Name }}-selenoid
+  template:
+    metadata:
+      labels:
+        name: {{ .Release.Name }}-selenoid
+    spec:
+      serviceAccountName: {{ .Values.rbac.serviceAccount }}
+      containers:
+        - name: selenoidk8s
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+          - name: TZ
+            value: {{ .Values.timeZone }}
+          args: [
+          "-conf", "/etc/selenoid/browsers.json",
+          "-limit", "{{ .Values.config.browsersLimit }}",
+          "-timeout", "7m0s",
+          "-retry-count", "5",
+          "-session-delete-timeout", "9m0s",
+          "-session-attempt-timeout", "240s",
+          "-service-startup-timeout", "240s",
+          "-disable-queue",
+          "-enable-kubernetes-support",
+          "-namespace", "{{.Release.Namespace}}"
+          ]
+          ports:
+          - name: selenium
+            containerPort: 4444
+          volumeMounts:
+          - name: browsers-config
+            mountPath: /etc/selenoid
+        - name: selenoid-ui
+          image: aerokube/selenoid-ui:1.6.3
+          args: ["-selenoid-uri", "http://127.0.0.1:4444"]
+          ports:
+          - name: selenoid-ui
+            containerPort: 8080
+      volumes:
+        - name: browsers-config
+          configMap:
+            name: {{ .Release.Name }}-selenoid-config
+    {{- if .Values.placement.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.placement.nodeSelector | indent 8 }}
+    {{- end }}
+    {{- if .Values.placement.tolerations }}
+      tolerations:
+{{ toYaml .Values.placement.tolerations | indent 8 }}
+    {{- end }}
+    {{- if .Values.placement.affinity }}
+      affinity:
+{{ toYaml .Values.placement.affinity | indent 8 }}
+    {{- end }}
