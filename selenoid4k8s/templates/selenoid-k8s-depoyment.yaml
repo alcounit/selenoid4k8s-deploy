@@ -17,18 +17,18 @@ spec:
       serviceAccountName: {{ .Values.rbac.serviceAccount }}
       containers:
         - name: selenoidk8s
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ .Values.image.repositoryHub }}:{{ .Values.image.tagHub }}
           env:
           - name: TZ
             value: {{ .Values.timeZone }}
           args: [
           "-conf", "/etc/selenoid/browsers.json",
           "-limit", "{{ .Values.config.browsersLimit }}",
-          "-timeout", "7m0s",
-          "-retry-count", "5",
-          "-session-delete-timeout", "9m0s",
-          "-session-attempt-timeout", "240s",
-          "-service-startup-timeout", "240s",
+          "-timeout", "{{ .Values.timeout }}",
+          "-retry-count", "{{ .Values.retryCount }}",
+          "-session-delete-timeout", "{{ .Values.sessionDeleteTimeout }}",
+          "-session-attempt-timeout", "{{ .Values.sessionAttemptTimeout }}",
+          "-service-startup-timeout", "{{ .Values.serviceStartupTimeout }}",
           "-disable-queue",
           "-enable-kubernetes-support",
           "-namespace", "{{.Release.Namespace}}"
@@ -40,7 +40,7 @@ spec:
           - name: browsers-config
             mountPath: /etc/selenoid
         - name: selenoid-ui
-          image: aerokube/selenoid-ui:1.6.3
+          image: {{ .Values.image.repositoryUi }}:{{ .Values.image.tagUi }}
           args: ["-selenoid-uri", "http://127.0.0.1:4444"]
           ports:
           - name: selenoid-ui

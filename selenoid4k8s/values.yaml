@@ -1,11 +1,11 @@
 # Default values for selenoid.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 replicaCount: 1
 
 image:
-  repository: alcounit/selenoidk8
-  tag: latest
+  repositoryHub: alcounit/selenoidk8
+  repositoryUi: aerokube/selenoid-ui
+  tagHub: latest
+  tagUi: latest
 
 imagePullSecrets: []
 
@@ -16,10 +16,12 @@ rbac:
   create: true
 
 service:
-  type: "NodePort"
+  type: "ClusterIP"
   nodePortUi: 30002
   nodePortHub: 30001
-  annotations: {}
+  annotations:
+    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: certa
 ingress:
   enabled: false
   annotations: {}
@@ -28,7 +30,12 @@ ingress:
   hostUi: "selenoid-ui.example.com"
   hostHub: "selenoid-hub.example.com"
 
-timeZone: Europe/Kiev
+timeZone: America/Chicago
+timeout: "7m0s"
+retryCount: "5"
+sessionDeleteTimeout: "9m0s"
+sessionAttemptTimeout: "240s"
+serviceStartupTimeout: "240s"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -79,7 +86,7 @@ placement:
     #     topologyKey: "kubernetes.io/hostname"
 
 config:
-  browsersLimit: 35
+  browsersLimit: 55
 
 browsers:
   chrome:
@@ -93,21 +100,11 @@ browsers:
           limits:
             cpu: "0.5"
             memory: "1024Mi"
-#  {
-#    "chrome": {
-#      "default": "68.0",
-#      "versions": {
-#        "68.0": {
-#          "image": "selenoid/vnc:chrome_68.0",
-#          "port": "4444",
-#          "shmSize": 536870912,
-#          "resources": {
-#            "limits": {
-#              "cpu": "1",
-#              "memory": "1536Mi"
-#            }
-#          }
-#        }
-#      }
-#    }
-#  }
+      "78.0":
+        image: "selenoid/vnc:chrome_78.0"
+        port: "4444"
+        shmSize: 536870912
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "1024Mi"

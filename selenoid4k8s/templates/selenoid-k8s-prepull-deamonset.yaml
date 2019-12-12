@@ -16,14 +16,21 @@ spec:
       labels:
         name: {{ .Release.Name }}-selenoid-images-prepull
     spec:
-      initContainers:
-      - command:
+      containers:
+      - name: selenoid-images-prepull
+        image: docker
+        command:
         - sh
         - -c
         - while true; do grep image /etc/selenoid/browsers.json | awk '{print $2}' | tr -d ',' | tr -d '"' |
           xargs -I{} docker pull {}; sleep 3600; done
-        name: selenoid-images-prepull
-        image: docker
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "150m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         volumeMounts:
         - name: docker-sock
           mountPath: /var/run
@@ -37,7 +44,4 @@ spec:
           path: /var/run
       - name: browsers-config
         configMap:
-          name: selenoid-app-config
-      containers:
-      - name: pause
-        image: gcr.io/google_containers/pause
+          name: {{ .Release.Name }}-selenoid-config
