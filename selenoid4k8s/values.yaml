@@ -1,0 +1,110 @@
+# Default values for selenoid.
+replicaCount: 1
+
+image:
+  repositoryHub: alcounit/selenoidk8
+  repositoryUi: aerokube/selenoid-ui
+  tagHub: latest
+  tagUi: latest
+
+imagePullSecrets: []
+
+## Role Based Access Control
+## Ref: https://kubernetes.io/docs/admin/authorization/rbac/
+rbac:
+  serviceAccount: selenoid-app
+  create: true
+
+service:
+  type: "ClusterIP"
+  nodePortUi: 30002
+  nodePortHub: 30001
+  annotations:
+    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: certa
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hostUi: "selenoid-ui.example.com"
+  hostHub: "selenoid-hub.example.com"
+
+timeZone: America/Chicago
+timeout: "7m0s"
+retryCount: "5"
+sessionDeleteTimeout: "9m0s"
+sessionAttemptTimeout: "240s"
+serviceStartupTimeout: "240s"
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+placement:
+  nodeSelector: {}
+  tolerations: []
+  #  - key: "key"
+  #    operator: "Equal|Exists"
+  #    value: "value"
+  #    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
+
+  ## Affinity and anti-affinity
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+  ##
+  affinity: {}
+    # # An example of preferred pod anti-affinity, weight is in the range 1-100
+    # podAntiAffinity:
+    #   preferredDuringSchedulingIgnoredDuringExecution:
+    #   - weight: 100
+    #     podAffinityTerm:
+    #       labelSelector:
+    #         matchExpressions:
+    #         - key: app
+    #           operator: In
+    #           values:
+    #           - nginx-ingress
+    #       topologyKey: kubernetes.io/hostname
+
+    # # An example of required pod anti-affinity
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - nginx-ingress
+    #     topologyKey: "kubernetes.io/hostname"
+
+config:
+  browsersLimit: 55
+
+browsers:
+  chrome:
+    default: "68.0"
+    versions:
+      "68.0":
+        image: "selenoid/vnc:chrome_68.0"
+        port: "4444"
+        shmSize: 536870912
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "1024Mi"
+      "78.0":
+        image: "selenoid/vnc:chrome_78.0"
+        port: "4444"
+        shmSize: 536870912
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "1024Mi"
