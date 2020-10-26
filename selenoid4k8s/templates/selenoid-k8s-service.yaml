@@ -12,7 +12,9 @@ metadata:
   {{- end }}
 {{- end }}
 spec:
+{{- if .Values.service.externalTrafficPolicy }}
   externalTrafficPolicy: Cluster
+{{- end }}
   ports:
   - name: selenoid-ui
     {{- if ( and ( .Values.service.nodePortUi ) ( eq .Values.service.type "NodePort" ) ) }}

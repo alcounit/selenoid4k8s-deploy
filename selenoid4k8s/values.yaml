@@ -16,6 +16,7 @@ rbac:
   create: true
 
 service:
+  externalTrafficPolicy: true
   type: "ClusterIP"
   nodePortUi: 30002
   nodePortHub: 30001
@@ -90,18 +91,32 @@ config:
 
 browsers:
   chrome:
-    default: "68.0"
+    default: "86.0"
     versions:
-      "68.0":
-        image: "selenoid/vnc:chrome_68.0"
+      "86.0":
+        image: "selenoid/vnc:chrome_86.0"
         port: "4444"
         shmSize: 536870912
         resources:
           limits:
             cpu: "0.5"
             memory: "1024Mi"
-      "78.0":
-        image: "selenoid/vnc:chrome_78.0"
+  opera:
+    default: "71.0"
+    versions:
+      "71.0":
+        image: "selenoid/vnc:opera_71.0"
+        port: "4444"
+        shmSize: 536870912
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "1024Mi"
+  firefox:
+    default: "81.0"
+    versions:
+      "81.0":
+        image: "selenoid/vnc:firefox_81.0"
         port: "4444"
         shmSize: 536870912
         resources:

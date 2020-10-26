@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "1.0"
 description: A Helm chart for deploy Selenoid to Kubernetes
 name: selenoid4K8s
-version: 0.1.0
+version: 0.1.1
