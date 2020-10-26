@@ -101,25 +101,25 @@ browsers:
           limits:
             cpu: "0.5"
             memory: "1024Mi"
-  opera:
-    default: "71.0"
-    versions:
-      "71.0":
-        image: "selenoid/vnc:opera_71.0"
-        port: "4444"
-        shmSize: 536870912
-        resources:
-          limits:
-            cpu: "0.5"
-            memory: "1024Mi"
-  firefox:
-    default: "81.0"
-    versions:
-      "81.0":
-        image: "selenoid/vnc:firefox_81.0"
-        port: "4444"
-        shmSize: 536870912
-        resources:
-          limits:
-            cpu: "0.5"
-            memory: "1024Mi"
+#  opera:
+#    default: "71.0"
+#    versions:
+#      "71.0":
+#        image: "selenoid/vnc:opera_71.0"
+#        port: "4444"
+#        shmSize: 536870912
+#        resources:
+#          limits:
+#            cpu: "0.5"
+#            memory: "1024Mi"
+#  firefox:
+#    default: "81.0"
+#    versions:
+#      "81.0":
+#        image: "selenoid/vnc:firefox_81.0"
+#        port: "4444"
+#        shmSize: 536870912
+#        resources:
+#          limits:
+#            cpu: "0.5"
+#            memory: "1024Mi"
