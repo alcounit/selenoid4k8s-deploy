@@ -4,8 +4,10 @@ replicaCount: 1
 image:
   repositoryHub: alcounit/selenoidk8
   repositoryUi: aerokube/selenoid-ui
+  repositoryPrepull: docker
   tagHub: latest
   tagUi: latest
+  tagPrepull: latest
 
 imagePullSecrets: []
 

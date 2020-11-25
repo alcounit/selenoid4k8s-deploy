@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: selenoid-images-prepull
-        image: docker
+        image: {{ .Values.image.repositoryPrepull }}:{{ .Values.image.tagPrepull }}
         command:
         - sh
         - -c
