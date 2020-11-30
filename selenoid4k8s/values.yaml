@@ -5,9 +5,11 @@ image:
   repositoryHub: alcounit/selenoidk8
   repositoryUi: aerokube/selenoid-ui
   repositoryPrepull: docker
+  repositoryPause: gcr.io/google_containers/pause
   tagHub: latest
   tagUi: latest
   tagPrepull: latest
+  tagPause: latest
 
 imagePullSecrets: []
 

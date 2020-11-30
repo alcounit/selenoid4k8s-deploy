@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: pause
-        image: gcr.io/google_containers/pause
+        image: {{ .Values.image.repositoryPause }}:{{ .Values.image.tagPause }}
       initContainers:
       - name: selenoid-images-prepull
         image: {{ .Values.image.repositoryPrepull }}:{{ .Values.image.tagPrepull }}
