@@ -1,3 +1,5 @@
+# This project is no longer supported, if you need a solution with the same features but with native Kubernetes cluster support please check [selenosis](https://github.com/alcounit/selenosis)
+
 # selenoid4k8s kubernetes deployment
 
 kubectl client should be installed and pointing to the cluster
